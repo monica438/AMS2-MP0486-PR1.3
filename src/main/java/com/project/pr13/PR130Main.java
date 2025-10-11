@@ -53,8 +53,17 @@ public class PR130Main {
         Document doc = parseXML(inputFile);
         if (doc != null) {
             NodeList persones = doc.getElementsByTagName("persona");
-            // imprimirCapçaleres();
-            // imprimirDadesPersones(persones);
+            System.out.println(PersonaFormatter.getCapçaleres());
+            
+            for (int i = 0; i < persones.getLength(); i++) {
+                Element personaElement = (Element) persones.item(i);
+                String nom = personaElement.getElementsByTagName("nom").item(0).getTextContent();
+                String cognom = personaElement.getElementsByTagName("cognom").item(0).getTextContent();
+                String edat = personaElement.getElementsByTagName("edat").item(0).getTextContent();
+                String ciutat = personaElement.getElementsByTagName("ciutat").item(0).getTextContent();
+
+                System.out.println(PersonaFormatter.formatarPersona(nom, cognom, edat, ciutat));
+            }
         }
     }
 
@@ -65,7 +74,16 @@ public class PR130Main {
      * @return Document XML carregat o null si hi ha hagut un error en la lectura.
      */
     public static Document parseXML(File inputFile) {
-        // *************** CODI PRÀCTICA **********************/
-        return null; // Substitueix pel teu        
+        try{
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            return doc;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;    
     }
 }

@@ -92,8 +92,54 @@ public class PR131Main {
      * @return Document XML creat o null en cas d'error.
      */
     private static Document construirDocument() {
-        // *************** CODI PRÀCTICA **********************/
-       return null; // Substitueix pel teu
+        try{
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.newDocument();  
+            Element biblioteca = doc.createElement("biblioteca");
+            doc.appendChild(biblioteca);
+
+            // Element llibre
+            Element llibre = doc.createElement("llibre");
+            llibre.setAttribute("id", "001");
+
+            // Afegim subelements
+            Element titol = doc.createElement("titol");
+            titol.setTextContent("El viatge dels venturons");
+            llibre.appendChild(titol);
+
+            Element autor = doc.createElement("autor");
+            autor.setTextContent("Joan Pla");
+            llibre.appendChild(autor);
+
+            Element anyPublicacio = doc.createElement("anyPublicacio");
+            anyPublicacio.setTextContent("1998");
+            llibre.appendChild(anyPublicacio);
+
+            Element editorial = doc.createElement("editorial");
+            editorial.setTextContent("Edicions Mar");
+            llibre.appendChild(editorial);
+
+            Element genere = doc.createElement("genere");
+            genere.setTextContent("Aventura");
+            llibre.appendChild(genere);
+
+            Element pagines = doc.createElement("pagines");
+            pagines.setTextContent("320");
+            llibre.appendChild(pagines);
+
+            Element disponible = doc.createElement("disponible");
+            disponible.setTextContent("true");
+            llibre.appendChild(disponible);
+
+            // Afegim el llibre a la biblioteca
+            biblioteca.appendChild(llibre);
+
+            return doc;
+
+        } catch (Exception e) {
+            e.printStackTrace();}
+       return null; 
     }
 
     /**
@@ -103,6 +149,15 @@ public class PR131Main {
      * @param fitxerSortida Fitxer de sortida on es guardarà el document.
      */
     private static void guardarDocument(Document doc, File fitxerSortida) {
-        // *************** CODI PRÀCTICA **********************/
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(fitxerSortida);
+            transformer.transform(source, result);
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
     }
 }
